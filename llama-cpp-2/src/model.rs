@@ -129,6 +129,14 @@ unsafe impl Send for LlamaModel {}
 unsafe impl Sync for LlamaModel {}
 
 impl LlamaModel {
+    /// Keryx zero-dup: raw model handle for the keryx tensor-enumeration FFI
+    /// (`llama_model_keryx_n_tensors` / `llama_model_keryx_tensor`). The pointer is
+    /// valid for `self`'s lifetime.
+    #[must_use]
+    pub fn as_raw(&self) -> *mut llama_cpp_sys_2::llama_model {
+        self.model.as_ptr()
+    }
+
     pub(crate) fn vocab_ptr(&self) -> *const llama_cpp_sys_2::llama_vocab {
         unsafe { llama_cpp_sys_2::llama_model_get_vocab(self.model.as_ptr()) }
     }
