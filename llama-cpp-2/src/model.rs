@@ -121,6 +121,14 @@ pub enum RopeType {
 }
 
 impl LlamaModel {
+    /// Keryx zero-dup: raw model handle for the keryx tensor-enumeration FFI
+    /// (`llama_model_keryx_n_tensors` / `llama_model_keryx_tensor`). The pointer is
+    /// valid for `self`'s lifetime.
+    #[must_use]
+    pub fn as_raw(&self) -> *const llama_cpp_sys_2::llama_model {
+        self.model.as_ptr()
+    }
+
     /// Get the model's vocabulary.
     #[must_use]
     pub fn vocab(&self) -> LlamaVocab<'_> {
